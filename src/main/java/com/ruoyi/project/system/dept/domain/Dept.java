@@ -1,6 +1,6 @@
 package com.ruoyi.project.system.dept.domain;
 
-import jakarta.validation.constraints.*;
+import javax.validation.constraints.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.fasterxml.jackson.annotation.JsonIgnore;

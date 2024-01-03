@@ -1,10 +1,10 @@
 package com.ruoyi.framework.shiro.service;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -80,7 +80,7 @@ public class PasswordService
 
     public String encryptPassword(String loginName, String password, String salt)
     {
-        return new Sha256Hash(loginName + password + salt).toHex();
+        return new Md5Hash(loginName + password + salt).toHex();
     }
 
     public static void main(String[] args)

@@ -45,8 +45,6 @@ user:
 
 # Spring配置
 spring:
-  main:
-    allow-circular-references: true
   # 模板引擎
   thymeleaf:
     mode: HTML

@@ -56,6 +56,7 @@ spring:
                     log-slow-sql: true
                     slow-sql-millis: 1000
                     merge-sql: true
+                    connection-stack-trace-enable: true
                 wall:
                     config:
                         multi-statement-allow: true

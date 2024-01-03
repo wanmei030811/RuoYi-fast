@@ -2,7 +2,7 @@ package com.ruoyi.project.system.menu.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.web.domain.BaseEntity;

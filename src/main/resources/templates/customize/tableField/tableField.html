@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+    <th:block th:include="include :: header('【请填写功能名称】列表')"/>
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label for="tableId">字典名称：</label>
+                            <select id="tableId" name="tableId" class="form-control">
+                                <option th:each="table : ${tableList}" th:text="${table['tableName']}" th:value="${table['tableId']}" th:field="*{table.tableId}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()">
+                                <i class="fa fa-search"></i>&nbsp;搜索
+                            </a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()">
+                                <i class="fa fa-refresh"></i>&nbsp;重置
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="add()">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: select2-js" />
+<script th:inline="javascript">
+    const prefix = ctx + "customize/table-field";
+    const fieldList = [[${fieldList}]];
+
+    const options = {
+        url: prefix + "/list",
+        createUrl: prefix + "/add/{id}",
+        updateUrl: prefix + "/edit/{id}/{fieldId}",
+        removeUrl: prefix + "/remove",
+        exportUrl: prefix + "/export",
+        modalName: "【TableField】",
+        columns: [{
+            checkbox: true
+        }, {
+            field: 'tableId',
+            title: 'table主键',
+            visible: false
+        }, {
+            field: 'fieldId',
+            title: 'field主键',
+            visible: false
+        }, {
+            field: 'fieldName',
+            title: 'field名称',
+            formatter: function (value, row, index) {
+                return  $.table.selectDictLabel(fieldList, row.fieldId);
+            }
+        }, {
+            field: 'javaType',
+            title: 'JAVA类型'
+        }, {
+            field: 'javaField',
+            title: 'JAVA字段名'
+        }, {
+            field: 'isPk',
+            title: '是否主键'
+        }, {
+            field: 'isIncrement',
+            title: '是否自增'
+        }, {
+            field: 'isRequired',
+            title: '是否必填'
+        }, {
+            field: 'isInsert',
+            title: '是否为插入字段'
+        }, {
+            field: 'isEdit',
+            title: '是否编辑字段'
+        }, {
+            field: 'isList',
+            title: '是否列表字段'
+        }, {
+            field: 'isQuery',
+            title: '是否查询字段'
+        }, {
+            field: 'queryType',
+            title: '查询方式'
+        }, {
+            field: 'htmlType',
+            title: '显示类型'
+        }, {
+            field: 'dictType',
+            title: '字典类型'
+        }, {
+            field: 'sort',
+            title: '排序'
+        }, {
+            title: '操作',
+            align: 'center',
+            formatter: function (value, row, index) {
+                var actions = [];
+                actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.tableId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.tableId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                return actions.join('');
+            }
+        }]
+    };
+
+    $(function () {
+        $.table.init(options);
+    });
+
+    function add() {
+        $.operate.add($("#tableId option:selected").val());
+    }
+</script>
+</body>
+</html>

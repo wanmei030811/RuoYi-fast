@@ -15,27 +15,27 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.15</version>
-        <relativePath />
+        <version>3.1.0</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>21.0.1</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-        <shiro.version>1.13.0</shiro.version>
+        <shiro.version>2.0.0-alpha-4</shiro.version>
         <thymeleaf.extras.shiro.version>2.1.0</thymeleaf.extras.shiro.version>
         <pagehelper.spring.boot.starter.version>1.4.7</pagehelper.spring.boot.starter.version>
         <fastjson.version>1.2.83</fastjson.version>
-        <druid.version>1.2.20</druid.version>
+        <druid.version>1.2.21</druid.version>
         <commons.io.version>2.13.0</commons.io.version>
         <bitwalker.version>1.21</bitwalker.version>
         <velocity.version>2.3</velocity.version>
         <kaptcha.version>2.3.3</kaptcha.version>
         <swagger.version>3.0.0</swagger.version>
         <poi.version>4.1.2</poi.version>
-        <oshi.version>6.4.7</oshi.version>
+        <oshi.version>6.4.8</oshi.version>
     </properties>
 
     <dependencies>
@@ -80,8 +80,30 @@
 
         <!-- Mysql驱动包 -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>io.asyncer</groupId>-->
+        <!--            <artifactId>r2dbc-mysql</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>3.5.5</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>mybatis-spring</artifactId>
+                    <groupId>org.mybatis</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>3.0.3</version>
         </dependency>
 
         <!-- pagehelper 分页插件 -->
@@ -117,25 +139,61 @@
             <version>${commons.io.version}</version>
         </dependency>
 
-        <!-- Shiro核心框架 -->
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>${shiro.version}</version>
-        </dependency>
-
         <!-- Shiro使用Spring框架 -->
+        <!--<dependency>-->
+        <!--    <groupId>org.apache.shiro</groupId>-->
+        <!--    <artifactId>shiro-spring</artifactId>-->
+        <!--    <version>${shiro.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
-            <version>${shiro.version}</version>
+            <classifier>jakarta</classifier>
+            <version>1.13.0</version>
+            <!-- 排除仍使用了javax.servlet的依赖 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.shiro</groupId>
+                    <artifactId>shiro-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.shiro</groupId>
+                    <artifactId>shiro-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- 引入适配jakarta的依赖包 -->
+        <!--<dependency>-->
+        <!--    <groupId>org.apache.shiro</groupId>-->
+        <!--    <artifactId>shiro-core</artifactId>-->
+        <!--    <version>${shiro.version}</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <classifier>jakarta</classifier>
+            <version>1.13.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <classifier>jakarta</classifier>
+            <version>1.13.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.shiro</groupId>
+                    <artifactId>shiro-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Shiro使用EhCache缓存框架 -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-ehcache</artifactId>
-            <version>${shiro.version}</version>
+            <version>1.13.0</version>
         </dependency>
 
         <!-- thymeleaf模板引擎和shiro框架的整合 -->
@@ -240,7 +298,19 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
+                    <!--  <fork>true</fork>如果没有该配置，devtools不会生效 -->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <!-- YUI Compressor (CSS/JS压缩) 

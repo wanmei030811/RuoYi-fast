@@ -45,6 +45,8 @@ user:
 
 # Spring配置
 spring:
+  main:
+    allow-circular-references: true
   # 模板引擎
   thymeleaf:
     mode: HTML
@@ -98,7 +100,7 @@ shiro:
     # 首页地址
     indexUrl: /index
     # 验证码开关
-    captchaEnabled: true
+    captchaEnabled: false
     # 验证码类型 math 数字计算 char 字符验证
     captchaType: math
   cookie:

@@ -5,120 +5,110 @@ import org.springframework.stereotype.Component;
 
 /**
  * 读取项目相关配置
- * 
+ *
  * @author ruoyi
  */
 @Component
 @ConfigurationProperties(prefix = "ruoyi")
-public class RuoYiConfig
-{
-    /** 项目名称 */
-    private String name;
+public class RuoYiConfig {
+  /**
+   * 上传路径
+   */
+  private static String profile;
+  /**
+   * 获取地址开关
+   */
+  private static boolean addressEnabled;
+  /**
+   * 项目名称
+   */
+  private String name;
+  /**
+   * 版本
+   */
+  private String version;
+  /**
+   * 版权年份
+   */
+  private String copyrightYear;
+  /**
+   * 实例演示开关
+   */
+  private boolean demoEnabled;
 
-    /** 版本 */
-    private String version;
+  public static String getProfile() {
+    return profile;
+  }
 
-    /** 版权年份 */
-    private String copyrightYear;
+  public void setProfile(String profile) {
+    RuoYiConfig.profile = profile;
+  }
 
-    /** 实例演示开关 */
-    private boolean demoEnabled;
+  public static boolean isAddressEnabled() {
+    return addressEnabled;
+  }
 
-    /** 上传路径 */
-    private static String profile;
+  public void setAddressEnabled(boolean addressEnabled) {
+    RuoYiConfig.addressEnabled = addressEnabled;
+  }
 
-    /** 获取地址开关 */
-    private static boolean addressEnabled;
-    
-    public String getName()
-    {
-        return name;
-    }
+  /**
+   * 获取导入上传路径
+   */
+  public static String getImportPath() {
+    return getProfile() + "/import";
+  }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+  /**
+   * 获取头像上传路径
+   */
+  public static String getAvatarPath() {
+    return getProfile() + "/avatar";
+  }
 
-    public String getVersion()
-    {
-        return version;
-    }
+  /**
+   * 获取下载路径
+   */
+  public static String getDownloadPath() {
+    return getProfile() + "/download/";
+  }
 
-    public void setVersion(String version)
-    {
-        this.version = version;
-    }
+  /**
+   * 获取上传路径
+   */
+  public static String getUploadPath() {
+    return getProfile() + "/upload";
+  }
 
-    public String getCopyrightYear()
-    {
-        return copyrightYear;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setCopyrightYear(String copyrightYear)
-    {
-        this.copyrightYear = copyrightYear;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public boolean isDemoEnabled()
-    {
-        return demoEnabled;
-    }
+  public String getVersion() {
+    return version;
+  }
 
-    public void setDemoEnabled(boolean demoEnabled)
-    {
-        this.demoEnabled = demoEnabled;
-    }
+  public void setVersion(String version) {
+    this.version = version;
+  }
 
-    public static String getProfile()
-    {
-        return profile;
-    }
+  public String getCopyrightYear() {
+    return copyrightYear;
+  }
 
-    public void setProfile(String profile)
-    {
-        RuoYiConfig.profile = profile;
-    }
+  public void setCopyrightYear(String copyrightYear) {
+    this.copyrightYear = copyrightYear;
+  }
 
-    public static boolean isAddressEnabled()
-    {
-        return addressEnabled;
-    }
+  public boolean isDemoEnabled() {
+    return demoEnabled;
+  }
 
-    public void setAddressEnabled(boolean addressEnabled)
-    {
-        RuoYiConfig.addressEnabled = addressEnabled;
-    }
-
-    /**
-     * 获取导入上传路径
-     */
-    public static String getImportPath()
-    {
-        return getProfile() + "/import";
-    }
-
-    /**
-     * 获取头像上传路径
-     */
-    public static String getAvatarPath()
-    {
-        return getProfile() + "/avatar";
-    }
-
-    /**
-     * 获取下载路径
-     */
-    public static String getDownloadPath()
-    {
-        return getProfile() + "/download/";
-    }
-
-    /**
-     * 获取上传路径
-     */
-    public static String getUploadPath()
-    {
-        return getProfile() + "/upload";
-    }
+  public void setDemoEnabled(boolean demoEnabled) {
+    this.demoEnabled = demoEnabled;
+  }
 }

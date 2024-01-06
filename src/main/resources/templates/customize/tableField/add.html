@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增【字段】')" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-field-add">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Table名：</label>
+                <div class="col-sm-8">
+                    <input hidden th:field="${table.tableId}" />
+                    <input class="form-control" type="text" th:field="${table.tableName}" readonly />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Field名：</label>
+                <div class="col-sm-8">
+                    <select id="fieldId" name="fieldId" class="form-control">
+                        <option th:each="field : ${fieldList}" th:text="${field['fieldName']}" th:value="${field['fieldId']}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">JAVA字段名：</label>
+                <div class="col-sm-8">
+                    <input name="javaField" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否主键：</label>
+                <div class="col-sm-8">
+                    <input name="isPk" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否自增：</label>
+                <div class="col-sm-8">
+                    <input name="isIncrement" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否必填：</label>
+                <div class="col-sm-8">
+                    <input name="isRequired" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否为插入字段：</label>
+                <div class="col-sm-8">
+                    <input name="isInsert" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否编辑字段：</label>
+                <div class="col-sm-8">
+                    <input name="isEdit" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否列表字段：</label>
+                <div class="col-sm-8">
+                    <input name="isList" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否查询字段：</label>
+                <div class="col-sm-8">
+                    <input name="isQuery" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">排序：</label>
+                <div class="col-sm-8">
+                    <input name="sort" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: select2-js" />
+    <script th:inline="javascript">
+        const prefix = ctx + "customize/table-field";
+        $("#form-field-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-field-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

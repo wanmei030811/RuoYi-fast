@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改【请填写功能名称】')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-button-edit" th:object="${pageButton}">
+            <input name="tableId" th:field="*{tableId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">Java字段名称：</label>
+                <div class="col-sm-8">
+                    <input name="javaField" th:field="*{javaField}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">DB字段名称：</label>
+                <div class="col-sm-8">
+                    <input name="dbField" th:field="*{dbField}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">按钮作用域：</label>
+                <div class="col-sm-8">
+                    <input name="buttonScope" th:field="*{buttonScope}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">按钮样式：</label>
+                <div class="col-sm-8">
+                    <input name="buttonClass" th:field="*{buttonClass}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">按钮权限：</label>
+                <div class="col-sm-8">
+                    <input name="buttonAuthority" th:field="*{buttonAuthority}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">排序：</label>
+                <div class="col-sm-8">
+                    <input name="sort" th:field="*{sort}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "customize/button";
+        $("#form-button-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-button-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.customize.mapper.PageAddMapper">
+
+  <resultMap type="PageAdd" id="PageAddResult">
+    <result property="tableId" column="table_id"/>
+    <result property="fieldId" column="field_id"/>
+    <result property="isRequired" column="is_required"/>
+    <result property="dValue" column="d_value"/>
+    <result property="dVType" column="d_v_type"/>
+    <result property="dVSource" column="d_v_source"/>
+    <result property="dVEdit" column="d_v_edit"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <sql id="selectPageAddVo">
+    select table_id,
+           field_id,
+           is_required,
+           d_value,
+           d_v_type,
+           d_v_source,
+           d_v_edit,
+           create_by,
+           create_time,
+           update_by,
+           update_time
+    from page_add
+  </sql>
+
+  <select id="selectPageAddList" parameterType="PageAdd" resultMap="PageAddResult">
+    <include refid="selectPageAddVo"/>
+    <where>
+      <if test="isRequired != null  and isRequired != ''">and is_required = #{isRequired}</if>
+      <if test="dValue != null  and dValue != ''">and d_value = #{dValue}</if>
+      <if test="dVType != null  and dVType != ''">and d_v_type = #{dVType}</if>
+      <if test="dVSource != null  and dVSource != ''">and d_v_source = #{dVSource}</if>
+      <if test="dVEdit != null  and dVEdit != ''">and d_v_edit = #{dVEdit}</if>
+    </where>
+  </select>
+
+  <select id="selectPageAddByTableId" parameterType="Long" resultMap="PageAddResult">
+    <include refid="selectPageAddVo"/>
+    where table_id = #{tableId}
+  </select>
+
+  <insert id="insertPageAdd" parameterType="PageAdd">
+    insert into page_add
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">table_id,</if>
+      <if test="fieldId != null">field_id,</if>
+      <if test="isRequired != null">is_required,</if>
+      <if test="dValue != null">d_value,</if>
+      <if test="dVType != null">d_v_type,</if>
+      <if test="dVSource != null">d_v_source,</if>
+      <if test="dVEdit != null">d_v_edit,</if>
+      <if test="createBy != null">create_by,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateBy != null">update_by,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">#{tableId},</if>
+      <if test="fieldId != null">#{fieldId},</if>
+      <if test="isRequired != null">#{isRequired},</if>
+      <if test="dValue != null">#{dValue},</if>
+      <if test="dVType != null">#{dVType},</if>
+      <if test="dVSource != null">#{dVSource},</if>
+      <if test="dVEdit != null">#{dVEdit},</if>
+      <if test="createBy != null">#{createBy},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="updateBy != null">#{updateBy},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+    </trim>
+  </insert>
+
+  <update id="updatePageAdd" parameterType="PageAdd">
+    update page_add
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="fieldId != null">field_id = #{fieldId},</if>
+      <if test="isRequired != null">is_required = #{isRequired},</if>
+      <if test="dValue != null">d_value = #{dValue},</if>
+      <if test="dVType != null">d_v_type = #{dVType},</if>
+      <if test="dVSource != null">d_v_source = #{dVSource},</if>
+      <if test="dVEdit != null">d_v_edit = #{dVEdit},</if>
+      <if test="createBy != null">create_by = #{createBy},</if>
+      <if test="createTime != null">create_time = #{createTime},</if>
+      <if test="updateBy != null">update_by = #{updateBy},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+    </trim>
+    where table_id = #{tableId}
+  </update>
+
+  <delete id="deletePageAddByTableId" parameterType="Long">
+    delete
+    from page_add
+    where table_id = #{tableId}
+  </delete>
+
+  <delete id="deletePageAddByTableIds" parameterType="String">
+    delete from page_add where table_id in
+    <foreach item="tableId" collection="array" open="(" separator="," close=")">
+      #{tableId}
+    </foreach>
+  </delete>
+
+</mapper>

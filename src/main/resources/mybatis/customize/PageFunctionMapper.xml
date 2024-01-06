@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.customize.mapper.PageFunctionMapper">
+
+  <resultMap type="PageFunction" id="PageFunctionResult">
+    <result property="tableId" column="table_id"/>
+    <result property="functionFilePath" column="function_file_path"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <sql id="selectPageFunctionVo">
+    select table_id, function_file_path, create_by, create_time, update_by, update_time
+    from page_function
+  </sql>
+
+  <select id="selectPageFunctionList" parameterType="PageFunction" resultMap="PageFunctionResult">
+    <include refid="selectPageFunctionVo"/>
+    <where>
+      <if test="functionFilePath != null  and functionFilePath != ''">and function_file_path = #{functionFilePath}</if>
+    </where>
+  </select>
+
+  <select id="selectPageFunctionByTableId" parameterType="Long" resultMap="PageFunctionResult">
+    <include refid="selectPageFunctionVo"/>
+    where table_id = #{tableId}
+  </select>
+
+  <insert id="insertPageFunction" parameterType="PageFunction">
+    insert into page_function
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">table_id,</if>
+      <if test="functionFilePath != null">function_file_path,</if>
+      <if test="createBy != null">create_by,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateBy != null">update_by,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">#{tableId},</if>
+      <if test="functionFilePath != null">#{functionFilePath},</if>
+      <if test="createBy != null">#{createBy},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="updateBy != null">#{updateBy},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+    </trim>
+  </insert>
+
+  <update id="updatePageFunction" parameterType="PageFunction">
+    update page_function
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="functionFilePath != null">function_file_path = #{functionFilePath},</if>
+      <if test="createBy != null">create_by = #{createBy},</if>
+      <if test="createTime != null">create_time = #{createTime},</if>
+      <if test="updateBy != null">update_by = #{updateBy},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+    </trim>
+    where table_id = #{tableId}
+  </update>
+
+  <delete id="deletePageFunctionByTableId" parameterType="Long">
+    delete
+    from page_function
+    where table_id = #{tableId}
+  </delete>
+
+  <delete id="deletePageFunctionByTableIds" parameterType="String">
+    delete from page_function where table_id in
+    <foreach item="tableId" collection="array" open="(" separator="," close=")">
+      #{tableId}
+    </foreach>
+  </delete>
+
+</mapper>

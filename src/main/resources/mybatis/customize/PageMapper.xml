@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.customize.mapper.PageMapper">
+
+  <resultMap type="Page" id="PageResult">
+    <result property="pageId" column="page_id"/>
+    <result property="pageName" column="page_name"/>
+    <result property="pageType" column="page_type"/>
+    <result property="sort" column="sort"/>
+    <result property="delFlag" column="del_flag"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <sql id="selectPageVo">
+    select page_id,
+           page_name,
+           page_type,
+           sort,
+           del_flag,
+           create_by,
+           create_time,
+           update_by,
+           update_time
+    from page
+  </sql>
+
+  <select id="selectPageList" parameterType="Page" resultMap="PageResult">
+    <include refid="selectPageVo"/>
+    <where>
+      <if test="pageName != null  and pageName != ''">and page_name = #{pageName}</if>
+      <if test="pageType != null  and pageType != ''">and page_type = #{pageType}</if>
+      <if test="sort != null ">and sort = #{sort}</if>
+    </where>
+  </select>
+
+  <select id="selectPageByPageId" parameterType="Long" resultMap="PageResult">
+    <include refid="selectPageVo"/>
+    where page_id = #{pageId}
+  </select>
+
+  <insert id="insertPage" parameterType="Page">
+    insert into page
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pageId != null">page_id,</if>
+      <if test="pageName != null">page_name,</if>
+      <if test="pageType != null">page_type,</if>
+      <if test="sort != null">sort,</if>
+      <if test="delFlag != null">del_flag,</if>
+      <if test="createBy != null">create_by,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateBy != null">update_by,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pageId != null">#{pageId},</if>
+      <if test="pageName != null">#{pageName},</if>
+      <if test="pageType != null">#{pageType},</if>
+      <if test="sort != null">#{sort},</if>
+      <if test="delFlag != null">#{delFlag},</if>
+      <if test="createBy != null">#{createBy},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="updateBy != null">#{updateBy},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+    </trim>
+  </insert>
+
+  <update id="updatePage" parameterType="Page">
+    update page
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="pageName != null">page_name = #{pageName},</if>
+      <if test="pageType != null">page_type = #{pageType},</if>
+      <if test="sort != null">sort = #{sort},</if>
+      <if test="delFlag != null">del_flag = #{delFlag},</if>
+      <if test="createBy != null">create_by = #{createBy},</if>
+      <if test="createTime != null">create_time = #{createTime},</if>
+      <if test="updateBy != null">update_by = #{updateBy},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+    </trim>
+    where page_id = #{pageId}
+  </update>
+
+  <delete id="deletePageByPageId" parameterType="Long">
+    delete
+    from page
+    where page_id = #{pageId}
+  </delete>
+
+  <delete id="deletePageByPageIds" parameterType="String">
+    delete from page where page_id in
+    <foreach item="pageId" collection="array" open="(" separator="," close=")">
+      #{pageId}
+    </foreach>
+  </delete>
+
+</mapper>

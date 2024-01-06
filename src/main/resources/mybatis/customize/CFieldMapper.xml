@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.customize.mapper.CFieldMapper">
+
+  <resultMap type="CField" id="CFieldResult">
+    <result property="fieldId" column="field_id"/>
+    <result property="fieldName" column="field_name"/>
+    <result property="fieldComment" column="field_comment"/>
+    <result property="fieldType" column="field_type"/>
+    <result property="fieldStatus" column="field_status"/>
+  </resultMap>
+
+  <sql id="selectCFieldVo">
+    select field_id, field_name, field_comment, field_type, field_status
+    from c_field
+  </sql>
+
+  <select id="selectCFieldList" parameterType="CField" resultMap="CFieldResult">
+    <include refid="selectCFieldVo"/>
+    <where>
+      <if test="fieldName != null  and fieldName != ''">and field_name like concat('%', #{fieldName}, '%')</if>
+      <if test="fieldComment != null  and fieldComment != ''">and field_comment = #{fieldComment}</if>
+      <if test="fieldType != null  and fieldType != ''">and field_type = #{fieldType}</if>
+      <if test="fieldStatus != null  and fieldStatus != ''">and field_status = #{fieldStatus}</if>
+    </where>
+  </select>
+
+  <select id="selectCFieldByFieldId" parameterType="Integer" resultMap="CFieldResult">
+    <include refid="selectCFieldVo"/>
+    where field_id = #{fieldId}
+  </select>
+
+  <insert id="insertCField" parameterType="CField">
+    insert into c_field
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fieldId != null">field_id,</if>
+      <if test="fieldName != null">field_name,</if>
+      <if test="fieldComment != null">field_comment,</if>
+      <if test="fieldType != null">field_type,</if>
+      <if test="fieldStatus != null">field_status,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fieldId != null">#{fieldId},</if>
+      <if test="fieldName != null">#{fieldName},</if>
+      <if test="fieldComment != null">#{fieldComment},</if>
+      <if test="fieldType != null">#{fieldType},</if>
+      <if test="fieldStatus != null">#{fieldStatus},</if>
+    </trim>
+  </insert>
+
+  <update id="updateCField" parameterType="CField">
+    update c_field
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="fieldName != null">field_name = #{fieldName},</if>
+      <if test="fieldComment != null">field_comment = #{fieldComment},</if>
+      <if test="fieldType != null">field_type = #{fieldType},</if>
+      <if test="fieldStatus != null">field_status = #{fieldStatus},</if>
+    </trim>
+    where field_id = #{fieldId}
+  </update>
+
+  <delete id="deleteCFieldByFieldId" parameterType="Integer">
+    delete
+    from c_field
+    where field_id = #{fieldId}
+  </delete>
+
+  <delete id="deleteCFieldByFieldIds" parameterType="String">
+    delete from c_field where field_id in
+    <foreach item="fieldId" collection="array" open="(" separator="," close=")">
+      #{fieldId}
+    </foreach>
+  </delete>
+
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.customize.mapper.PageCallbackMapper">
+
+  <resultMap type="PageCallback" id="PageCallbackResult">
+    <result property="tableId" column="table_id"/>
+    <result property="url" column="url"/>
+    <result property="function" column="function"/>
+    <result property="params" column="params"/>
+    <result property="type" column="type"/>
+  </resultMap>
+
+  <sql id="selectPageCallbackVo">
+    select table_id,
+           url,
+           function,
+           params,
+           type
+    from page_callback
+  </sql>
+
+  <select id="selectPageCallbackList" parameterType="PageCallback" resultMap="PageCallbackResult">
+    <include refid="selectPageCallbackVo"/>
+    <where>
+      <if test="url != null  and url != ''">and url = #{url}</if>
+      <if test="function != null  and function != ''">and function = #{function}</if>
+      <if test="params != null  and params != ''">and params = #{params}</if>
+      <if test="type != null  and type != ''">and type = #{type}</if>
+    </where>
+  </select>
+
+  <select id="selectPageCallbackByTableId" parameterType="Long" resultMap="PageCallbackResult">
+    <include refid="selectPageCallbackVo"/>
+    where table_id = #{tableId}
+  </select>
+
+  <insert id="insertPageCallback" parameterType="PageCallback">
+    insert into page_callback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">table_id,</if>
+      <if test="url != null">url,</if>
+      <if test="function != null">function,</if>
+      <if test="params != null">params,</if>
+      <if test="type != null">type,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">#{tableId},</if>
+      <if test="url != null">#{url},</if>
+      <if test="function != null">#{function},</if>
+      <if test="params != null">#{params},</if>
+      <if test="type != null">#{type},</if>
+    </trim>
+  </insert>
+
+  <update id="updatePageCallback" parameterType="PageCallback">
+    update page_callback
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="url != null">url = #{url},</if>
+      <if test="function != null">function = #{function},</if>
+      <if test="params != null">params = #{params},</if>
+      <if test="type != null">type = #{type},</if>
+    </trim>
+    where table_id = #{tableId}
+  </update>
+
+  <delete id="deletePageCallbackByTableId" parameterType="Long">
+    delete
+    from page_callback
+    where table_id = #{tableId}
+  </delete>
+
+  <delete id="deletePageCallbackByTableIds" parameterType="String">
+    delete from page_callback where table_id in
+    <foreach item="tableId" collection="array" open="(" separator="," close=")">
+      #{tableId}
+    </foreach>
+  </delete>
+
+</mapper>

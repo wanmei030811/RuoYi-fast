@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.customize.mapper.PageQueryMapper">
+
+  <resultMap type="PageQuery" id="PageQueryResult">
+    <result property="tableId" column="table_id"/>
+    <result property="fieldId" column="field_id"/>
+    <result property="isQuery" column="is_query"/>
+    <result property="sort" column="sort"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <sql id="selectPageQueryVo">
+    select table_id,
+           field_id,
+           is_query,
+           sort,
+           create_by,
+           create_time,
+           update_by,
+           update_time
+    from page_query
+  </sql>
+
+  <select id="selectPageQueryList" parameterType="PageQuery" resultMap="PageQueryResult">
+    <include refid="selectPageQueryVo"/>
+    <where>
+      <if test="isQuery != null  and isQuery != ''">and is_query = #{isQuery}</if>
+      <if test="sort != null ">and sort = #{sort}</if>
+    </where>
+  </select>
+
+  <select id="selectPageQueryByTableId" parameterType="Long" resultMap="PageQueryResult">
+    <include refid="selectPageQueryVo"/>
+    where table_id = #{tableId}
+  </select>
+
+  <insert id="insertPageQuery" parameterType="PageQuery">
+    insert into page_query
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">table_id,</if>
+      <if test="fieldId != null">field_id,</if>
+      <if test="isQuery != null">is_query,</if>
+      <if test="sort != null">sort,</if>
+      <if test="createBy != null">create_by,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateBy != null">update_by,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">#{tableId},</if>
+      <if test="fieldId != null">#{fieldId},</if>
+      <if test="isQuery != null">#{isQuery},</if>
+      <if test="sort != null">#{sort},</if>
+      <if test="createBy != null">#{createBy},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="updateBy != null">#{updateBy},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+    </trim>
+  </insert>
+
+  <update id="updatePageQuery" parameterType="PageQuery">
+    update page_query
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="fieldId != null">field_id = #{fieldId},</if>
+      <if test="isQuery != null">is_query = #{isQuery},</if>
+      <if test="sort != null">sort = #{sort},</if>
+      <if test="createBy != null">create_by = #{createBy},</if>
+      <if test="createTime != null">create_time = #{createTime},</if>
+      <if test="updateBy != null">update_by = #{updateBy},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+    </trim>
+    where table_id = #{tableId}
+  </update>
+
+  <delete id="deletePageQueryByTableId" parameterType="Long">
+    delete
+    from page_query
+    where table_id = #{tableId}
+  </delete>
+
+  <delete id="deletePageQueryByTableIds" parameterType="String">
+    delete from page_query where table_id in
+    <foreach item="tableId" collection="array" open="(" separator="," close=")">
+      #{tableId}
+    </foreach>
+  </delete>
+
+</mapper>

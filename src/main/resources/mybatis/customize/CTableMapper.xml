@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.customize.mapper.CTableMapper">
+
+  <resultMap type="CTable" id="CTableResult">
+    <result property="tableId" column="table_id"/>
+    <result property="parentTableId" column="parent_table_id"/>
+    <result property="tableName" column="table_name"/>
+    <result property="tableComment" column="table_comment"/>
+    <result property="tableType" column="table_type"/>
+    <result property="tableStatus" column="table_status"/>
+  </resultMap>
+
+  <sql id="selectCTableVo">
+    select table_id, parent_table_id, table_name, table_comment, table_type, table_status
+    from c_table
+  </sql>
+
+  <select id="selectCTableList" parameterType="CTable" resultMap="CTableResult">
+    <include refid="selectCTableVo"/>
+    <where>
+      <if test="parentTableId != null  and parentTableId != ''">and parent_table_id = #{parentTableId}</if>
+      <if test="tableName != null  and tableName != ''">and table_name like concat('%', #{tableName}, '%')</if>
+      <if test="tableComment != null  and tableComment != ''">and table_comment = #{tableComment}</if>
+      <if test="tableType != null  and tableType != ''">and table_type = #{tableType}</if>
+      <if test="tableStatus != null  and tableStatus != ''">and table_status = #{tableStatus}</if>
+    </where>
+  </select>
+
+  <select id="selectById" parameterType="Long" resultMap="CTableResult">
+    <include refid="selectCTableVo"/>
+    where table_id = #{tableId}
+  </select>
+
+  <select id="selectTableAll" resultMap="CTableResult">
+    select table_id, parent_table_id, table_name, table_comment, table_type, table_status
+    from c_table
+    -- where table_status = 1
+  </select>
+
+  <insert id="insertCTable" parameterType="CTable">
+    insert into c_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">table_id,</if>
+      <if test="parentTableId != null">parent_table_id,</if>
+      <if test="tableName != null">table_name,</if>
+      <if test="tableComment != null">table_comment,</if>
+      <if test="tableType != null">table_type,</if>
+      <if test="tableStatus != null">table_status,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">#{tableId},</if>
+      <if test="parentTableId != null">#{parentTableId},</if>
+      <if test="tableName != null">#{tableName},</if>
+      <if test="tableComment != null">#{tableComment},</if>
+      <if test="tableType != null">#{tableType},</if>
+      <if test="tableStatus != null">#{tableStatus},</if>
+    </trim>
+  </insert>
+
+  <update id="updateCTable" parameterType="CTable">
+    update c_table
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="parentTableId != null">parent_table_id = #{parentTableId},</if>
+      <if test="tableName != null">table_name = #{tableName},</if>
+      <if test="tableComment != null">table_comment = #{tableComment},</if>
+      <if test="tableType != null">table_type = #{tableType},</if>
+      <if test="tableStatus != null">table_status = #{tableStatus},</if>
+    </trim>
+    where table_id = #{tableId}
+  </update>
+
+  <delete id="deleteCTableByTableId" parameterType="Long">
+    delete
+    from c_table
+    where table_id = #{tableId}
+  </delete>
+
+  <delete id="deleteCTableByTableIds" parameterType="String">
+    delete from c_table where table_id in
+    <foreach item="tableId" collection="array" open="(" separator="," close=")">
+      #{tableId}
+    </foreach>
+  </delete>
+
+</mapper>

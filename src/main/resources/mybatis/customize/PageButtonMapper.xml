@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.customize.mapper.PageButtonMapper">
+
+  <resultMap type="PageButton" id="PageButtonResult">
+    <result property="tableId" column="table_id"/>
+    <result property="fieldId" column="field_id"/>
+    <result property="javaField" column="java_field"/>
+    <result property="dbField" column="db_field"/>
+    <result property="buttonScope" column="button_scope"/>
+    <result property="buttonClass" column="button_class"/>
+    <result property="buttonType" column="button_type"/>
+    <result property="buttonAuthority" column="button_authority"/>
+    <result property="sort" column="sort"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <sql id="selectPageButtonVo">
+    select table_id,
+           field_id,
+           java_field,
+           db_field,
+           button_scope,
+           button_class,
+           button_type,
+           button_authority,
+           sort,
+           create_by,
+           create_time,
+           update_by,
+           update_time
+    from page_button
+  </sql>
+
+  <select id="selectPageButtonList" parameterType="PageButton" resultMap="PageButtonResult">
+    <include refid="selectPageButtonVo"/>
+    <where>
+      <if test="javaField != null  and javaField != ''">and java_field = #{javaField}</if>
+      <if test="dbField != null  and dbField != ''">and db_field = #{dbField}</if>
+      <if test="buttonScope != null  and buttonScope != ''">and button_scope = #{buttonScope}</if>
+      <if test="buttonClass != null  and buttonClass != ''">and button_class = #{buttonClass}</if>
+      <if test="buttonType != null  and buttonType != ''">and button_type = #{buttonType}</if>
+      <if test="buttonAuthority != null  and buttonAuthority != ''">and button_authority = #{buttonAuthority}</if>
+      <if test="sort != null ">and sort = #{sort}</if>
+    </where>
+  </select>
+
+  <select id="selectPageButtonByTableId" parameterType="Long" resultMap="PageButtonResult">
+    <include refid="selectPageButtonVo"/>
+    where table_id = #{tableId}
+  </select>
+
+  <insert id="insertPageButton" parameterType="PageButton">
+    insert into page_button
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">table_id,</if>
+      <if test="fieldId != null">field_id,</if>
+      <if test="javaField != null">java_field,</if>
+      <if test="dbField != null">db_field,</if>
+      <if test="buttonScope != null">button_scope,</if>
+      <if test="buttonClass != null">button_class,</if>
+      <if test="buttonType != null">button_type,</if>
+      <if test="buttonAuthority != null">button_authority,</if>
+      <if test="sort != null">sort,</if>
+      <if test="createBy != null">create_by,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateBy != null">update_by,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">#{tableId},</if>
+      <if test="fieldId != null">#{fieldId},</if>
+      <if test="javaField != null">#{javaField},</if>
+      <if test="dbField != null">#{dbField},</if>
+      <if test="buttonScope != null">#{buttonScope},</if>
+      <if test="buttonClass != null">#{buttonClass},</if>
+      <if test="buttonType != null">#{buttonType},</if>
+      <if test="buttonAuthority != null">#{buttonAuthority},</if>
+      <if test="sort != null">#{sort},</if>
+      <if test="createBy != null">#{createBy},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="updateBy != null">#{updateBy},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+    </trim>
+  </insert>
+
+  <update id="updatePageButton" parameterType="PageButton">
+    update page_button
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="fieldId != null">field_id = #{fieldId},</if>
+      <if test="javaField != null">java_field = #{javaField},</if>
+      <if test="dbField != null">db_field = #{dbField},</if>
+      <if test="buttonScope != null">button_scope = #{buttonScope},</if>
+      <if test="buttonClass != null">button_class = #{buttonClass},</if>
+      <if test="buttonType != null">button_type = #{buttonType},</if>
+      <if test="buttonAuthority != null">button_authority = #{buttonAuthority},</if>
+      <if test="sort != null">sort = #{sort},</if>
+      <if test="createBy != null">create_by = #{createBy},</if>
+      <if test="createTime != null">create_time = #{createTime},</if>
+      <if test="updateBy != null">update_by = #{updateBy},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+    </trim>
+    where table_id = #{tableId}
+  </update>
+
+  <delete id="deletePageButtonByTableId" parameterType="Long">
+    delete
+    from page_button
+    where table_id = #{tableId}
+  </delete>
+
+  <delete id="deletePageButtonByTableIds" parameterType="String">
+    delete from page_button where table_id in
+    <foreach item="tableId" collection="array" open="(" separator="," close=")">
+      #{tableId}
+    </foreach>
+  </delete>
+
+</mapper>

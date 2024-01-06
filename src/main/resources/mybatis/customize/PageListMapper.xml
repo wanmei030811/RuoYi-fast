@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.customize.mapper.PageListMapper">
+
+  <resultMap type="PageList" id="PageListResult">
+    <result property="tableId" column="table_id"/>
+    <result property="fieldId" column="field_id"/>
+    <result property="isList" column="is_list"/>
+    <result property="sort" column="sort"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <sql id="selectPageListVo">
+    select table_id,
+           field_id,
+           is_list,
+           sort,
+           create_by,
+           create_time,
+           update_by,
+           update_time
+    from page_list
+  </sql>
+
+  <select id="selectPageListList" parameterType="PageList" resultMap="PageListResult">
+    <include refid="selectPageListVo"/>
+    <where>
+      <if test="isList != null  and isList != ''">and is_list = #{isList}</if>
+      <if test="sort != null ">and sort = #{sort}</if>
+    </where>
+  </select>
+
+  <select id="selectPageListByTableId" parameterType="Long" resultMap="PageListResult">
+    <include refid="selectPageListVo"/>
+    where table_id = #{tableId}
+  </select>
+
+  <insert id="insertPageList" parameterType="PageList">
+    insert into page_list
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">table_id,</if>
+      <if test="fieldId != null">field_id,</if>
+      <if test="isList != null">is_list,</if>
+      <if test="sort != null">sort,</if>
+      <if test="createBy != null">create_by,</if>
+      <if test="createTime != null">create_time,</if>
+      <if test="updateBy != null">update_by,</if>
+      <if test="updateTime != null">update_time,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tableId != null">#{tableId},</if>
+      <if test="fieldId != null">#{fieldId},</if>
+      <if test="isList != null">#{isList},</if>
+      <if test="sort != null">#{sort},</if>
+      <if test="createBy != null">#{createBy},</if>
+      <if test="createTime != null">#{createTime},</if>
+      <if test="updateBy != null">#{updateBy},</if>
+      <if test="updateTime != null">#{updateTime},</if>
+    </trim>
+  </insert>
+
+  <update id="updatePageList" parameterType="PageList">
+    update page_list
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="fieldId != null">field_id = #{fieldId},</if>
+      <if test="isList != null">is_list = #{isList},</if>
+      <if test="sort != null">sort = #{sort},</if>
+      <if test="createBy != null">create_by = #{createBy},</if>
+      <if test="createTime != null">create_time = #{createTime},</if>
+      <if test="updateBy != null">update_by = #{updateBy},</if>
+      <if test="updateTime != null">update_time = #{updateTime},</if>
+    </trim>
+    where table_id = #{tableId}
+  </update>
+
+  <delete id="deletePageListByTableId" parameterType="Long">
+    delete
+    from page_list
+    where table_id = #{tableId}
+  </delete>
+
+  <delete id="deletePageListByTableIds" parameterType="String">
+    delete from page_list where table_id in
+    <foreach item="tableId" collection="array" open="(" separator="," close=")">
+      #{tableId}
+    </foreach>
+  </delete>
+
+</mapper>
